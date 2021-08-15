@@ -1,6 +1,8 @@
 package com.spring.redditclone.service;
 
 import com.spring.redditclone.dto.SubredditDto;
+import com.spring.redditclone.exceptions.RedditException;
+import com.spring.redditclone.mapper.SubredditMapper;
 import com.spring.redditclone.model.Subreddit;
 import com.spring.redditclone.repository.SubredditRepository;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class SubredditService {
 
     private final SubredditRepository subredditRepository;
+    private final SubredditMapper subredditMapper;
 
     @Transactional
     public SubredditDto save(SubredditDto subredditDto){
@@ -45,6 +48,12 @@ public class SubredditService {
         return SubredditDto.builder().name(subreddit.getName())
                 .description(subreddit.getDescription())
                 .build();
+    }
+
+    private SubredditDto getSubredditDto(Long id){
+        Subreddit subreddit = subredditRepository.findById(id)
+                .orElseThrow(() -> new RedditException("No Subreddit found with ID: " + id));
+        return subredditMapper.mySubredditDto(subreddit);
     }
 
 }

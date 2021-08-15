@@ -50,11 +50,11 @@ public class JwtProvider {
     }
 
     public boolean validateToken(String jwt) {
-        parser().setSigningKey(getPublickey()).parseClaimsJws(jwt);
+        parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
         return true;
     }
 
-    private PublicKey getPublickey() {
+    private PublicKey getPublicKey() {
         try {
             return keyStore.getCertificate("redditclone").getPublicKey();
         } catch (KeyStoreException e) {
@@ -64,7 +64,7 @@ public class JwtProvider {
 
     public String getUsernameFromJWT(String token) {
         Claims claims = parser()
-                .setSigningKey(getPublickey())
+                .setSigningKey(getPublicKey())
                 .parseClaimsJws(token)
                 .getBody();
 
